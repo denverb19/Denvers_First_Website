@@ -1,0 +1,16 @@
+html, body {
+    height: 100%;
+    margin: 0px;
+    overflow: hidden;
+}
+
+div.mainDivs {
+    width:25%; 
+    height:100%;
+    float: left;
+}
+iframe {
+    margin: 0;
+    border-collapse: collapse;
+    border: none;
+}

@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<link rel="stylesheet" href="styleThree.css">
+<script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
+<script>
+  function changeColorCombo(passedID) {
+    document.getElementById('hiddenChangeFlag').innerHTML = 'Set';
+    let tempRed = document.getElementById('thirdRed').value;
+    let tempGreen = document.getElementById('thirdGreen').value;
+    let tempBlue = document.getElementById('thirdBlue').value;
+    let tempStrobes = document.getElementsByClassName('strobeLabels');
+    let tempBody = document.getElementById('mainBody');
+    let tempDivs = $('div *');
+    let tempElements = $('body *');
+    let rgbString = "rgb(" + tempRed + ", " + tempGreen + ", " + tempBlue + ")";
+    let revrgbString = "rgb(" + (255 - tempRed) + ", " + (255 - tempGreen) + ", " + (255 - tempBlue) + ")";
+    let blendSelection = document.querySelector('input[type=radio]:checked + label');
+    for(i = 0; i < tempDivs.length; i++){
+      tempDivs[i].style.backgroundColor = rgbString;
+    }
+    for(i = 0; i < tempElements.length; i++){
+      tempElements[i].style.color = revrgbString;
+    }
+    blendSelection.style.backgroundImage = "linear-gradient(#000, " + rgbString + " , #000)";
+    tempBody.style.color = revrgbString;
+    tempBody.style.backgroundColor = rgbString;
+    switch(passedID){
+      case 'thirdRed': 
+        document.getElementById('printRed').innerHTML = tempRed;
+        break;
+      case 'thirdGreen': 
+        document.getElementById('printGreen').innerHTML = tempGreen;
+        break;
+      case 'thirdBlue': 
+        document.getElementById('printBlue').innerHTML = tempBlue;
+        break;
+      default: 
+        document.getElementById('printRed').innerHTML = "There was an error, invalid element";
+    }
+    tempStrobes[0].style.backgroundImage = "radial-gradient(red 0%, orange 16%, yellow 32%, green 48%, blue 64%, violet 80%)";
+    tempStrobes[1].style.backgroundImage = "radial-gradient(violet 0%, blue 16%, green 32%, yellow 48%, orange 64%, red 80%)";                                                                                  
+  }
+  function changeBlendMode(passedID) {
+    let tempBody = document.getElementById('mainBody');
+    let tempRed = document.getElementById('thirdRed').value;
+    let tempGreen = document.getElementById('thirdGreen').value;
+    let tempBlue = document.getElementById('thirdBlue').value;
+    let tempStrobes = document.getElementsByClassName('strobeLabels');
+    let tempElements = $("input[type=radio] + label");
+    let newChoice = $("input[type=radio]:checked + label");
+    let rgbString = "rgb(" + tempRed + ", " + tempGreen + ", " + tempBlue + ")";
+    tempBody.style.backgroundBlendMode = passedID;
+    for(i = 0; i < tempElements.length; i++){
+      tempElements[i].style.backgroundImage = 'none';
+    };
+    if(document.getElementById('hiddenChangeFlag').innerHTML == 'Unset'){
+      newChoice[0].style.backgroundImage = "linear-gradient(#000, #f00 , #000)";
+    }
+    else {
+      newChoice[0].style.backgroundImage = "linear-gradient(#000, " + rgbString + " , #000)";
+    }
+    tempStrobes[0].style.backgroundImage = "radial-gradient(red 0%, orange 16%, yellow 32%, green 48%, blue 64%, violet 80%)";
+    tempStrobes[1].style.backgroundImage = "radial-gradient(violet 0%, blue 16%, green 32%, yellow 48%, orange 64%, red 80%)";
+  }
+  function weightFunction(origWeight, passedID) {
+    let oldWeight = origWeight;
+    let tempValue = oldWeight - document.getElementById(passedID).value;
+    switch(passedID) {
+      case 'currentWeight':
+        document.getElementById('numberOfPounds').innerHTML = Math.abs(tempValue);
+        if(tempValue == 0) {
+          document.getElementById('someChangeWeight').style.display = "none";
+          document.getElementById('noChangeWeight').style.display = "block";
+        }
+        else if(tempValue > 0) {
+          document.getElementById('someChangeWeight').style.display = "block";
+          document.getElementById('noChangeWeight').style.display = "none";
+          document.getElementById('gainOrLoss').innerHTML = "lost";
+        }
+        else {
+          document.getElementById('someChangeWeight').style.display = "block";
+          document.getElementById('noChangeWeight').style.display = "none";
+          document.getElementById('gainOrLoss').innerHTML = "gained";
+        }
+        break;
+      case 'currentBench':
+        document.getElementById('benchPounds').innerHTML = Math.abs(tempValue);
+        if(tempValue == 0) {
+          document.getElementById('someChangeBench').style.display = "none";
+          document.getElementById('noChangeBench').style.display = "block";
+        }
+        else if(tempValue > 0) {
+          document.getElementById('someChangeBench').style.display = "block";
+          document.getElementById('noChangeBench').style.display = "none";
+          document.getElementById('benchGainOrLoss').innerHTML = "worsened by ";
+        }
+        else {
+          document.getElementById('someChangeBench').style.display = "block";
+          document.getElementById('noChangeBench').style.display = "none";
+          document.getElementById('benchGainOrLoss').innerHTML = "improved by ";
+        }
+        break;
+      case 'currentBicep':
+        document.getElementById('bicepPounds').innerHTML = Math.abs(tempValue);
+        if(tempValue == 0) {
+          document.getElementById('someChangeBicep').style.display = "none";
+          document.getElementById('noChangeBicep').style.display = "block";
+        }
+        else if(tempValue > 0) {
+          document.getElementById('someChangeBicep').style.display = "block";
+          document.getElementById('noChangeBicep').style.display = "none";
+          document.getElementById('bicepGainOrLoss').innerHTML = "worsened by ";
+        }
+        else {
+          document.getElementById('someChangeBicep').style.display = "block";
+          document.getElementById('noChangeBicep').style.display = "none";
+          document.getElementById('bicepGainOrLoss').innerHTML = "improved by ";
+        }
+        break;
+      case 'currentFrontDelt':
+        document.getElementById('frontDeltPounds').innerHTML = Math.abs(tempValue);
+        if(tempValue == 0) {
+          document.getElementById('someChangeFrontDelt').style.display = "none";
+          document.getElementById('noChangeFrontDelt').style.display = "block";
+        }
+        else if(tempValue > 0) {
+          document.getElementById('someChangeFrontDelt').style.display = "block";
+          document.getElementById('noChangeFrontDelt').style.display = "none";
+          document.getElementById('frontDeltGainOrLoss').innerHTML = "worsened by ";
+        }
+        else {
+          document.getElementById('someChangeFrontDelt').style.display = "block";
+          document.getElementById('noChangeFrontDelt').style.display = "none";
+          document.getElementById('frontDeltGainOrLoss').innerHTML = "improved by ";
+        }
+        break;
+      case 'currentTricep':
+        document.getElementById('tricepPounds').innerHTML = Math.abs(tempValue);
+        if(tempValue == 0) {
+          document.getElementById('someChangeTricep').style.display = "none";
+          document.getElementById('noChangeTricep').style.display = "block";
+        }
+        else if(tempValue > 0) {
+          document.getElementById('someChangeTricep').style.display = "block";
+          document.getElementById('noChangeTricep').style.display = "none";
+          document.getElementById('tricepGainOrLoss').innerHTML = "worsened by ";
+        }
+        else {
+          document.getElementById('someChangeTricep').style.display = "block";
+          document.getElementById('noChangeTricep').style.display = "none";
+          document.getElementById('tricepGainOrLoss').innerHTML = "improved by ";
+        }
+        break;
+      case 'currentLat':
+        document.getElementById('latPounds').innerHTML = Math.abs(tempValue);
+        if(tempValue == 0) {
+          document.getElementById('someChangeLat').style.display = "none";
+          document.getElementById('noChangeLat').style.display = "block";
+        }
+        else if(tempValue > 0) {
+          document.getElementById('someChangeLat').style.display = "block";
+          document.getElementById('noChangeLat').style.display = "none";
+          document.getElementById('latGainOrLoss').innerHTML = "worsened by ";
+        }
+        else {
+          document.getElementById('someChangeLat').style.display = "block";
+          document.getElementById('noChangeLat').style.display = "none";
+          document.getElementById('latGainOrLoss').innerHTML = "improved by ";
+        }
+        break;
+    }
+  }
+  var backgroundInterval;
+  var firstColor = 0;
+  var firstClear = 1;
+  var secondColor = 0;
+  var secondClear = 1;
+  var thirdColor = 0;
+  var thirdClear = 1;
+  var firstCombo = 0;
+  var comboClearOne = 1;
+  var secondCombo = 0;
+  var comboClearTwo = 1;
+  var thirdCombo = 0;
+  var comboClearThree = 1;
+  var finalCombo = 0;
+  var finalClear = 1;
+  function strobeIntervalFunction() {
+    if(firstColor < 255) {
+      firstColor++;
+      document.getElementById('thirdRed').value = firstColor;
+      changeColorCombo('thirdRed');
+    }
+    else if(firstClear < 256) {
+      document.getElementById('thirdRed').value = (firstColor - firstClear);
+      changeColorCombo('thirdRed');
+      firstClear++;
+    }
+    else if(secondColor < 255) {
+      secondColor++;
+      document.getElementById('thirdGreen').value = secondColor;
+      changeColorCombo('thirdGreen');
+    }
+    else if(secondClear < 256) {
+      document.getElementById('thirdGreen').value = (secondColor - secondClear);
+      changeColorCombo('thirdGreen');
+      secondClear++;
+    }
+    else if(thirdColor < 255) {
+      thirdColor++;
+      document.getElementById('thirdBlue').value = thirdColor;
+      changeColorCombo('thirdBlue');
+    }
+    else if(thirdClear < 256) {
+      document.getElementById('thirdBlue').value = (thirdColor - thirdClear);
+      changeColorCombo('thirdBlue');
+      thirdClear++;
+    }
+    else if(firstCombo < 255) {
+      firstCombo++;
+      document.getElementById('thirdRed').value = firstCombo;
+      document.getElementById('thirdGreen').value = firstCombo;
+      changeColorCombo('thirdRed');
+      changeColorCombo('thirdGreen');
+    }
+    else if(comboClearOne < 256) {
+      document.getElementById('thirdRed').value = (firstCombo - comboClearOne);
+      document.getElementById('thirdGreen').value = (firstCombo - comboClearOne);
+      changeColorCombo('thirdRed');
+      changeColorCombo('thirdGreen');
+      comboClearOne++;
+    }
+    else if(secondCombo < 255) {
+      secondCombo++;
+      document.getElementById('thirdBlue').value = secondCombo;
+      document.getElementById('thirdGreen').value = secondCombo;
+      changeColorCombo('thirdBlue');
+      changeColorCombo('thirdGreen');
+    }
+    else if(comboClearTwo < 256) {
+      document.getElementById('thirdBlue').value = (secondCombo - comboClearTwo);
+      document.getElementById('thirdGreen').value = (secondCombo - comboClearTwo);
+      changeColorCombo('thirdBlue');
+      changeColorCombo('thirdGreen');
+      comboClearTwo++;
+    }
+    else if(thirdCombo < 255) {
+      thirdCombo++;
+      document.getElementById('thirdBlue').value = thirdCombo;
+      document.getElementById('thirdRed').value = thirdCombo;
+      changeColorCombo('thirdBlue');
+      changeColorCombo('thirdRed');
+    }
+    else if(comboClearThree < 256) {
+      document.getElementById('thirdBlue').value = (thirdCombo - comboClearThree);
+      document.getElementById('thirdRed').value = (thirdCombo - comboClearThree);
+      changeColorCombo('thirdBlue');
+      changeColorCombo('thirdRed');
+      comboClearThree++;
+    }
+    else if(finalCombo < 255) {
+      finalCombo++;
+      document.getElementById('thirdRed').value = finalCombo;
+      document.getElementById('thirdGreen').value = finalCombo;
+      document.getElementById('thirdBlue').value = finalCombo;
+      changeColorCombo('thirdRed');
+      changeColorCombo('thirdGreen');
+      changeColorCombo('thirdBlue');
+    }
+    else if(finalClear < 256) {
+      document.getElementById('thirdRed').value = (finalCombo - finalClear);
+      document.getElementById('thirdGreen').value = (finalCombo - finalClear);
+      document.getElementById('thirdBlue').value = (finalCombo - finalClear);
+      changeColorCombo('thirdRed');
+      changeColorCombo('thirdGreen');
+      changeColorCombo('thirdBlue');
+      finalClear++;
+    }
+    else {
+      firstColor = 0;
+      firstClear = 1;
+      secondColor = 0;
+      secondClear = 1;
+      thirdColor = 0;
+      thirdClear = 1;
+      firstCombo = 0;
+      comboClearOne = 1;
+      secondCombo = 0;
+      comboClearTwo = 1;
+      thirdCombo = 0;
+      comboClearThree = 1;
+      finalCombo = 0;
+      finalClear = 1;
+    }
+  }
+  function strobeBackground() {
+    if(document.getElementById('hiddenStrobeFlag').innerHTML == 'NoStrobe') {
+      document.getElementById('hiddenStrobeFlag').innerHTML = 'Strobe';
+      backgroundInterval = setInterval(strobeIntervalFunction, 5);
+    }
+  }
+  function stopStrobeBackground() {
+    if(document.getElementById('hiddenStrobeFlag').innerHTML == 'Strobe') {
+      document.getElementById('hiddenStrobeFlag').innerHTML = 'NoStrobe';
+      clearInterval(backgroundInterval);
+    }
+  }
+</script>
+</head>
+<body id="mainBody">
+  <div class="sliderContainer">
+    <input type="range" width="100%" min="0" max="255" value="0" class="redChooser" oninput="changeColorCombo(id)" id="thirdRed">
+    <p class="rgbDisplayer">Red Value:<span id="printRed">0</span></p>
+  </div>
+  <div class="sliderContainer" style="width:33.4%;">
+    <input type="range" width="100%" min="0" max="255" value="0" class="greenChooser" oninput="changeColorCombo(id)" id="thirdGreen">
+    <p class="rgbDisplayer">Green Value:<span id="printGreen">0</span></p>
+  </div>
+  <div class="sliderContainer">
+    <input type="range" width="100%" min="0" max="255" value="0" class="blueChooser" oninput="changeColorCombo(id)" id="thirdBlue">
+    <p class="rgbDisplayer">Blue Value:<span id="printBlue">0</span></p>
+  </div>
+  <div class="radioButtonContainer">
+    <input type="radio" id="lighten" name="blendMode" value="lighten" onchange="changeBlendMode(id)" checked /><label for="lighten">Lighten</label><br>
+  </div>
+  <div class="radioButtonContainer" style="width:33.4%;">
+    <input type="radio" id="darken" name="blendMode" value="darken" onchange="changeBlendMode(id)" /><label for="darken">Darken</label><br>
+  </div>
+  <div class="radioButtonContainer">
+    <input type="radio" id="difference" name="blendMode" value="difference" onchange="changeBlendMode(id)" /><label for="difference">Difference</label><br>
+  </div>
+  <div class="radioButtonContainer">
+    <input type="radio" id="luminosity" name="blendMode" value="luminosity" onchange="changeBlendMode(id)" /><label for="luminosity">Luminosity</label><br>
+  </div>
+  <div class="radioButtonContainer" style="width:33.4%;">
+    <input type="radio" id="screen" name="blendMode" value="screen" onchange="changeBlendMode(id)" /><label for="screen">Screen</label><br>
+  </div>
+  <div class="radioButtonContainer">
+    <input type="radio" id="hard-light" name="blendMode" value="hard-light" onchange="changeBlendMode(id)" /><label for="hard-light">Hard-Light</label><br>
+  </div>
+  <input type="radio" id="strobeToggle" name="strobeMode" value="strobe" onchange="strobeBackground()" /><label id="strobeButtonLabel" class="strobeLabels" for="strobeToggle">Enable Custom Strobe</label>
+  <input type="radio" id="strobeOff" name="strobeMode" value="strobeOff" onchange="stopStrobeBackground()" /><label id="stopStrobeButtonLabel" class="strobeLabels" for="strobeOff">Disable Custom Strobe</label>
+  <span id="mainHeader">Fitness Goals</span>
+  <p class="fitnessInfo">Original Weight: 226 pounds</p>
+  <p class="fitnessInfo">Current Weight: 
+    <input type="number" id="currentWeight" onchange="weightFunction(226, id)" name="weightQuantity" min="170" max="300" value="226" />pounds
+  </p>
+  <p id="someChangeWeight" class="fitnessInfo" style="display:none;">A total of <span id="numberOfPounds">0</span> pound(s) have been <span id="gainOrLoss">lost</span> so far this summer</p>
+  <p id="noChangeWeight" class="fitnessInfo">There have been no net changes in weight so far this summer</p>
+  <p class="fitnessInfo">Original Bench Press: 185 pounds</p>
+  <p class="fitnessInfo">Current Bench Press: 
+    <input type="number" id="currentBench" onchange="weightFunction(185, id)" name="benchQuantity" min="135" max="325" value="185" step="10"/>pounds
+  </p>
+  <p id="someChangeBench" class="fitnessInfo" style="display:none;">Bench Press performance has <span id="benchGainOrLoss">worsened by</span><span id="benchPounds">0</span> pounds so far this summer</p>
+  <p id="noChangeBench" class="fitnessInfo">There have been no net changes in bench press performance so far this summer</p>
+  <p class="fitnessInfo">Original Bicep Curl: 85 pounds</p>
+  <p class="fitnessInfo">Current Bicep Curl: 
+    <input type="number" id="currentBicep" onchange="weightFunction(85, id)" name="bicepQuantity" min="50" max="100" value="85" step="5"/>pounds
+  </p>
+  <p id="someChangeBicep" class="fitnessInfo" style="display:none;">Bicep Curl performance has <span id="bicepGainOrLoss">worsened by</span><span id="bicepPounds">0</span> pounds so far this summer</p>
+  <p id="noChangeBicep" class="fitnessInfo">There have been no net changes in bicep curl performance so far this summer</p>
+  <p class="fitnessInfo">Original Front Deltoid Raise: 22.5 pounds</p>
+  <p class="fitnessInfo">Current Front Deltoid Raise: 
+    <input type="number" id="currentFrontDelt" onchange="weightFunction(22.5, id)" name="frontDeltQuantity" min="15" max="50" value="22.5" step="2.5"/>pounds
+  </p>
+  <p id="someChangeFrontDelt" class="fitnessInfo" style="display:none;">Front Deltoid Raise performance has <span id="frontDeltGainOrLoss">worsened by</span><span id="frontDeltPounds">0</span> pounds so far this summer</p>
+  <p id="noChangeFrontDelt" class="fitnessInfo">There have been no net changes in front deltoid raise performance so far this summer</p>
+  <p class="fitnessInfo">Original Tricep Extension: 70 pounds</p>
+  <p class="fitnessInfo">Current Tricep Extension: 
+    <input type="number" id="currentTricep" onchange="weightFunction(70, id)" name="tricepExtensionQuantity" min="40" max="100" value="70" step="10"/>pounds
+  </p>
+  <p id="someChangeTricep" class="fitnessInfo" style="display:none;">Tricep Extension performance has <span id="tricepGainOrLoss">worsened by</span><span id="tricepPounds">0</span> pounds so far this summer</p>
+  <p id="noChangeTricep" class="fitnessInfo">There have been no net changes in tricep extension performance so far this summer</p>
+  <p class="fitnessInfo">Original Lateral Pull-Down: 225 pounds</p>
+  <p class="fitnessInfo">Current Lateral Pull-Down: 
+    <input type="number" id="currentLat" onchange="weightFunction(225, id)" name="latQuantity" min="145" max="305" value="225" step="10"/>pounds
+  </p>
+  <p id="someChangeLat" class="fitnessInfo" style="display:none;">Lateral Pull-Down performance has <span id="latGainOrLoss">worsened by</span><span id="latPounds">0</span> pounds so far this summer</p>
+  <p id="noChangeLat" class="fitnessInfo">There have been no net changes in lateral pul-down performance so far this summer</p>
+  <span style="display:none;" id="hiddenChangeFlag">Unset</span>
+  <span style="display:none;" id="hiddenStrobeFlag">NoStrobe</span>
+</body>
+</html>

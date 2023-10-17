@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>      
+<script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
+<link rel="stylesheet" href="styleOne.css">
+<script>
+    function writeIn(passedID) {
+        document.getElementById('cellId').innerHTML = passedID;
+        document.getElementById('oldentry').innerHTML = document.getElementById(passedID).innerHTML;
+        document.getElementById('inputForm').style.visibility = 'visible'
+    }
+    function changeEntry() {
+        document.getElementById(this.document.getElementById('cellId').innerHTML).innerHTML = document.getElementById('inputBox').value;
+        document.getElementById('inputForm').style.visibility = 'hidden'
+    }
+    function changeColorCombo(passedID) {
+        document.getElementById('hiddenChangeFlag').innerHTML = 'Set';
+        let tempRed = document.getElementById('firstRed').value;
+        let tempGreen = document.getElementById('firstGreen').value;
+        let tempBlue = document.getElementById('firstBlue').value;
+        let tempStrobes = document.getElementsByClassName('strobeLabels');
+        let tempBody = document.getElementById('mainBody');
+        let tempDivs = $('div *');
+        let tempElements = $("body *");
+        let rgbString = "rgb(" + tempRed + ", " + tempGreen + ", " + tempBlue + ")";
+        let revrgbString = "rgb(" + (255 - tempRed) + ", " + (255 - tempGreen) + ", " + (255 - tempBlue) + ")";
+        let blendSelection = document.querySelector('input[type=radio]:checked + label');
+        for(i = 0; i < tempDivs.length; i++) {
+            tempDivs[i].style.backgroundColor = rgbString;
+        }
+        for(i = 0; i < tempElements.length; i++) {
+            tempElements[i].style.color = revrgbString;
+        }
+        blendSelection.style.backgroundImage = "linear-gradient(#000, " + rgbString + " , #000)";
+        tempBody.style.color = revrgbString;
+        tempBody.style.backgroundColor = rgbString;
+        switch(passedID){
+            case 'firstRed': 
+              document.getElementById('printRed').innerHTML = tempRed;
+              break;
+            case 'firstGreen': 
+              document.getElementById('printGreen').innerHTML = tempGreen;
+              break;
+            case 'firstBlue': 
+              document.getElementById('printBlue').innerHTML = tempBlue;
+              break;
+            default: 
+              document.getElementById('printRed').innerHTML = "There was an error, invalid element";
+        }
+        tempStrobes[0].style.backgroundImage = "radial-gradient(red 0%, orange 16%, yellow 32%, green 48%, blue 64%, violet 80%)";
+        tempStrobes[1].style.backgroundImage = "radial-gradient(violet 0%, blue 16%, green 32%, yellow 48%, orange 64%, red 80%)";                                                                                                               
+    }
+    function changeBlendMode(passedID) {
+        let tempBody = document.getElementById('mainBody');
+        let tempRed = document.getElementById('firstRed').value;
+        let tempGreen = document.getElementById('firstGreen').value;
+        let tempBlue = document.getElementById('firstBlue').value;
+        let tempStrobes = document.getElementsByClassName('strobeLabels');
+        let tempElements = $("input[type=radio] + label");
+        let newChoice = $("input[type=radio]:checked + label");
+        let rgbString = "rgb(" + tempRed + ", " + tempGreen + ", " + tempBlue + ")";
+        tempBody.style.backgroundBlendMode = passedID;
+        for(i = 0; i < tempElements.length; i++){
+            tempElements[i].style.backgroundImage = 'none';
+        };
+        if(document.getElementById('hiddenChangeFlag').innerHTML == 'Unset'){
+            newChoice[0].style.backgroundImage = "linear-gradient(#000, #f00 , #000)";
+        }
+        else {
+            newChoice[0].style.backgroundImage = "linear-gradient(#000, " + rgbString + " , #000)";
+        }
+        tempStrobes[0].style.backgroundImage = "radial-gradient(red 0%, orange 16%, yellow 32%, green 48%, blue 64%, violet 80%)";
+        tempStrobes[1].style.backgroundImage = "radial-gradient(violet 0%, blue 16%, green 32%, yellow 48%, orange 64%, red 80%)";
+    }
+    var backgroundInterval;
+    var firstColor = 0;
+    var firstClear = 1;
+    var secondColor = 0;
+    var secondClear = 1;
+    var thirdColor = 0;
+    var thirdClear = 1;
+    var firstCombo = 0;
+    var comboClearOne = 1;
+    var secondCombo = 0;
+    var comboClearTwo = 1;
+    var thirdCombo = 0;
+    var comboClearThree = 1;
+    var finalCombo = 0;
+    var finalClear = 1;
+    function strobeIntervalFunction() {
+        if(firstColor < 255) {
+            firstColor++;
+            document.getElementById('firstRed').value = firstColor;
+            changeColorCombo('firstRed');
+        }
+        else if(firstClear < 256) {
+            document.getElementById('firstRed').value = (firstColor - firstClear);
+            changeColorCombo('firstRed');
+            firstClear++;
+        }
+        else if(secondColor < 255) {
+            secondColor++;
+            document.getElementById('firstGreen').value = secondColor;
+            changeColorCombo('firstGreen');
+        }
+        else if(secondClear < 256) {
+            document.getElementById('firstGreen').value = (secondColor - secondClear);
+            changeColorCombo('firstGreen');
+            secondClear++;
+        }
+        else if(thirdColor < 255) {
+            thirdColor++;
+            document.getElementById('firstBlue').value = thirdColor;
+            changeColorCombo('firstBlue');
+        }
+        else if(thirdClear < 256) {
+            document.getElementById('firstBlue').value = (thirdColor - thirdClear);
+            changeColorCombo('firstBlue');
+            thirdClear++;
+        }
+        else if(firstCombo < 255) {
+            firstCombo++;
+            document.getElementById('firstRed').value = firstCombo;
+            document.getElementById('firstGreen').value = firstCombo;
+            changeColorCombo('firstRed');
+            changeColorCombo('firstGreen');
+        }
+        else if(comboClearOne < 256) {
+            document.getElementById('firstRed').value = (firstCombo - comboClearOne);
+            document.getElementById('firstGreen').value = (firstCombo - comboClearOne);
+            changeColorCombo('firstRed');
+            changeColorCombo('firstGreen');
+            comboClearOne++;
+        }
+        else if(secondCombo < 255) {
+            secondCombo++;
+            document.getElementById('firstBlue').value = secondCombo;
+            document.getElementById('firstGreen').value = secondCombo;
+            changeColorCombo('firstBlue');
+            changeColorCombo('firstGreen');
+        }
+        else if(comboClearTwo < 256) {
+            document.getElementById('firstBlue').value = (secondCombo - comboClearTwo);
+            document.getElementById('firstGreen').value = (secondCombo - comboClearTwo);
+            changeColorCombo('firstBlue');
+            changeColorCombo('firstGreen');
+            comboClearTwo++;
+        }
+        else if(thirdCombo < 255) {
+            thirdCombo++;
+            document.getElementById('firstBlue').value = thirdCombo;
+            document.getElementById('firstRed').value = thirdCombo;
+            changeColorCombo('firstBlue');
+            changeColorCombo('firstRed');
+        }
+        else if(comboClearThree < 256) {
+            document.getElementById('firstBlue').value = (thirdCombo - comboClearThree);
+            document.getElementById('firstRed').value = (thirdCombo - comboClearThree);
+            changeColorCombo('firstBlue');
+            changeColorCombo('firstRed');
+            comboClearThree++;
+        }
+        else if(finalCombo < 255) {
+            finalCombo++;
+            document.getElementById('firstRed').value = finalCombo;
+            document.getElementById('firstGreen').value = finalCombo;
+            document.getElementById('firstBlue').value = finalCombo;
+            changeColorCombo('firstRed');
+            changeColorCombo('firstGreen');
+            changeColorCombo('firstBlue');
+        }
+        else if(finalClear < 256) {
+            document.getElementById('firstRed').value = (finalCombo - finalClear);
+            document.getElementById('firstGreen').value = (finalCombo - finalClear);
+            document.getElementById('firstBlue').value = (finalCombo - finalClear);
+            changeColorCombo('firstRed');
+            changeColorCombo('firstGreen');
+            changeColorCombo('firstBlue');
+            finalClear++;
+        }
+        else {
+            firstColor = 0;
+            firstClear = 1;
+            secondColor = 0;
+            secondClear = 1;
+            thirdColor = 0;
+            thirdClear = 1;
+            firstCombo = 0;
+            comboClearOne = 1;
+            secondCombo = 0;
+            comboClearTwo = 1;
+            thirdCombo = 0;
+            comboClearThree = 1;
+            finalCombo = 0;
+            finalClear = 1;
+        }
+    }
+    function strobeBackground() {
+        if(document.getElementById('hiddenStrobeFlag').innerHTML == 'NoStrobe') {
+            document.getElementById('hiddenStrobeFlag').innerHTML = 'Strobe';
+            backgroundInterval = setInterval(strobeIntervalFunction, 5);
+        }
+    }
+    function stopStrobeBackground() {
+        if(document.getElementById('hiddenStrobeFlag').innerHTML == 'Strobe') {
+            document.getElementById('hiddenStrobeFlag').innerHTML = 'NoStrobe';
+            clearInterval(backgroundInterval);
+        }
+    }
+</script>
+</head>
+<body id="mainBody">
+    <div class="sliderContainer">
+      <input type="range" width="100%" min="0" max="255" value="0" class="redChooser" oninput="changeColorCombo(id)" id="firstRed">
+      <p class="rgbDisplayer">Red Value:<span id="printRed">0</span></p>
+    </div>
+    <div class="sliderContainer" style="width:33.4%;">
+      <input type="range" width="100%" min="0" max="255" value="0" class="greenChooser" oninput="changeColorCombo(id)" id="firstGreen">
+      <p class="rgbDisplayer">Green Value:<span id="printGreen">0</span></p>
+    </div>
+    <div class="sliderContainer">
+      <input type="range" width="100%" min="0" max="255" value="0" class="blueChooser" oninput="changeColorCombo(id)" id="firstBlue">
+      <p class="rgbDisplayer">Blue Value:<span id="printBlue">0</span></p>
+    </div>
+    <div class="radioButtonContainer">
+        <input type="radio" id="lighten" name="blendMode" value="lighten" onchange="changeBlendMode(id)" checked /><label for="lighten">Lighten</label><br>
+    </div>
+    <div class="radioButtonContainer" style="width:33.4%;">
+        <input type="radio" id="darken" name="blendMode" value="darken" onchange="changeBlendMode(id)" /><label for="darken">Darken</label><br>
+    </div>
+    <div class="radioButtonContainer">
+        <input type="radio" id="difference" name="blendMode" value="difference" onchange="changeBlendMode(id)" /><label for="difference">Difference</label><br>
+    </div>
+    <div class="radioButtonContainer">
+        <input type="radio" id="luminosity" name="blendMode" value="luminosity" onchange="changeBlendMode(id)" /><label for="luminosity">Luminosity</label><br>
+    </div>
+    <div class="radioButtonContainer" style="width:33.4%;">
+        <input type="radio" id="screen" name="blendMode" value="screen" onchange="changeBlendMode(id)" /><label for="screen">Screen</label><br>
+    </div>
+    <div class="radioButtonContainer">
+        <input type="radio" id="hard-light" name="blendMode" value="hard-light" onchange="changeBlendMode(id)" /><label for="hard-light">Hard-Light</label><br>
+    </div>
+    <input type="radio" id="strobeToggle" name="strobeMode" value="strobe" onchange="strobeBackground()" /><label id="strobeButtonLabel" class="strobeLabels" for="strobeToggle">Enable Custom Strobe</label>
+    <input type="radio" id="strobeOff" name="strobeMode" value="strobeOff" onchange="stopStrobeBackground()" /><label id="stopStrobeButtonLabel" class="strobeLabels" for="strobeOff">Disable Custom Strobe</label>
+    <table>
+        <caption>Certification Progress</caption>
+        <tr>
+            <th>Course</th>
+            <th>Chapters Complete</th>
+            <th>Exam Status</th>
+            <th>Certification Status</th>
+        </tr>
+        <tr>
+            <td id="1a" onclick="writeIn(id)">HTML(W3 Schools)</td>
+            <td id="1b" onclick="writeIn(id)">Chapter 9</td>
+            <td id="1c" onclick="writeIn(id)">Final(complete)</td>
+            <td id="1d" onclick="writeIn(id)">Certified</td>
+        </tr>
+        <tr>
+            <td id="2a" onclick="writeIn(id)">CSS(W3 Schools)</td>
+            <td id="2b" onclick="writeIn(id)">Chapter 16</td>
+            <td id="2c" onclick="writeIn(id)">Final(complete)</td>
+            <td id="2d" onclick="writeIn(id)">Certified</td>
+        </tr>
+        <tr>
+            <td id="3a" onclick="writeIn(id)">JavaScript(W3 Schools)</td>
+            <td id="3b" onclick="writeIn(id)">Chapter 20</td>
+            <td id="3c" onclick="writeIn(id)">Final(complete)</td>
+            <td id="3d" onclick="writeIn(id)">Certified</td>
+        </tr>
+        <tr>
+            <td id="4a" onclick="writeIn(id)">Associate Game Developer(Unity)</td>
+            <td id="4b" onclick="writeIn(id)">Chapter 1</td>
+            <td id="4c" onclick="writeIn(id)">Practice(not started)</td>
+            <td id="4d" onclick="writeIn(id)">Not Started</td>
+        </tr>
+        <tr>
+            <td id="5a" onclick="writeIn(id)">Associate Artist(Unity)</td>
+            <td id="5b" onclick="writeIn(id)">Chapter 1</td>
+            <td id="5c" onclick="writeIn(id)">Practice(not started)</td>
+            <td id="5d" onclick="writeIn(id)">Not Started</td>
+        </tr>
+        <tr>
+            <td id="6a" onclick="writeIn(id)">Associate Programmer(Unity)</td>
+            <td id="6b" onclick="writeIn(id)">Chapter 1</td>
+            <td id="6c" onclick="writeIn(id)">Practice(not started)</td>
+            <td id="6d" onclick="writeIn(id)">Not Started</td>
+        </tr>
+    </table>
+    <form id="inputForm">
+        <p style="display:inline;">Old Entry: </p>
+        <p id="oldentry" style="display:inline;">Data</p><p id="cellId" style="visibility:hidden; display:inline;">Data</p><br />
+        <label for="inputbox">New Entry:</label><br />
+        <input type="text" id="inputBox" name="inputbox"><br />
+        <input type="button" onclick="changeEntry()" value="Submit">
+    </form>
+    <span style="display:none;" id="hiddenChangeFlag">Unset</span>
+    <span style="display:none;" id="hiddenStrobeFlag">NoStrobe</span>
+</body>
+</html>

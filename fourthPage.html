@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<link rel="stylesheet" href="styleFour.css">
+<script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
+<script>
+  function changeColorCombo(passedID) {
+    document.getElementById('hiddenChangeFlag').innerHTML = 'Set';
+    let tempRed = document.getElementById('fourthRed').value;
+    let tempGreen = document.getElementById('fourthGreen').value;
+    let tempBlue = document.getElementById('fourthBlue').value;
+    let tempStrobes = document.getElementsByClassName('strobeLabels');
+    let tempBody = document.getElementById('mainBody');
+    let tempDivs = $('div *');
+    let tempElements = $('body *');
+    let rgbString = "rgb(" + tempRed + ", " + tempGreen + ", " + tempBlue + ")";
+    let revrgbString = "rgb(" + (255 - tempRed) + ", " + (255 - tempGreen) + ", " + (255 - tempBlue) + ")";
+    let blendSelection = document.querySelector('input[type=radio]:checked + label');
+    for(i = 0; i < tempDivs.length; i++){
+      tempDivs[i].style.backgroundColor = rgbString;
+    }
+    for(i = 0; i < tempElements.length; i++){
+      tempElements[i].style.color = revrgbString;
+    }
+    blendSelection.style.backgroundImage = "linear-gradient(#000, " + rgbString + " , #000)";
+    tempBody.style.color = revrgbString;
+    tempBody.style.backgroundColor = rgbString;
+    switch(passedID){
+      case 'fourthRed': 
+        document.getElementById('printRed').innerHTML = tempRed;
+        break;
+      case 'fourthGreen': 
+        document.getElementById('printGreen').innerHTML = tempGreen;
+        break;
+      case 'fourthBlue': 
+        document.getElementById('printBlue').innerHTML = tempBlue;
+        break;
+      default: 
+        document.getElementById('printRed').innerHTML = "There was an error, invalid element";
+    }
+    tempStrobes[0].style.backgroundImage = "radial-gradient(red 0%, orange 16%, yellow 32%, green 48%, blue 64%, violet 80%)";
+    tempStrobes[1].style.backgroundImage = "radial-gradient(violet 0%, blue 16%, green 32%, yellow 48%, orange 64%, red 80%)";
+  }
+  function changeBlendMode(passedID) {
+    let tempBody = document.getElementById('mainBody');
+    let tempRed = document.getElementById('fourthRed').value;
+    let tempGreen = document.getElementById('fourthGreen').value;
+    let tempBlue = document.getElementById('fourthBlue').value;
+    let tempStrobes = document.getElementsByClassName('strobeLabels');
+    let tempElements = $("input[type=radio] + label");
+    let newChoice = $("input[type=radio]:checked + label");
+    let rgbString = "rgb(" + tempRed + ", " + tempGreen + ", " + tempBlue + ")";
+    tempBody.style.backgroundBlendMode = passedID;
+    for(i = 0; i < tempElements.length; i++){
+      tempElements[i].style.backgroundImage = 'none';
+    }
+    if(document.getElementById('hiddenChangeFlag').innerHTML == 'Unset'){
+      newChoice[0].style.backgroundImage = "linear-gradient(#000, #f00 , #000)";
+    }
+    else {
+      newChoice[0].style.backgroundImage = "linear-gradient(#000, " + rgbString + " , #000)";
+    }
+    tempStrobes[0].style.backgroundImage = "radial-gradient(red 0%, orange 16%, yellow 32%, green 48%, blue 64%, violet 80%)";
+    tempStrobes[1].style.backgroundImage = "radial-gradient(violet 0%, blue 16%, green 32%, yellow 48%, orange 64%, red 80%)";
+  }
+  var backgroundInterval;
+  var firstColor = 0;
+  var firstClear = 1;
+  var secondColor = 0;
+  var secondClear = 1;
+  var thirdColor = 0;
+  var thirdClear = 1;
+  var firstCombo = 0;
+  var comboClearOne = 1;
+  var secondCombo = 0;
+  var comboClearTwo = 1;
+  var thirdCombo = 0;
+  var comboClearThree = 1;
+  var finalCombo = 0;
+  var finalClear = 1;
+  function strobeIntervalFunction() {
+    if(firstColor < 255) {
+      firstColor++;
+      document.getElementById('fourthRed').value = firstColor;
+      changeColorCombo('fourthRed');
+    }
+    else if(firstClear < 256) {
+      document.getElementById('fourthRed').value = (firstColor - firstClear);
+      changeColorCombo('fourthRed');
+      firstClear++;
+    }
+    else if(secondColor < 255) {
+      secondColor++;
+      document.getElementById('fourthGreen').value = secondColor;
+      changeColorCombo('fourthGreen');
+    }
+    else if(secondClear < 256) {
+      document.getElementById('fourthGreen').value = (secondColor - secondClear);
+      changeColorCombo('fourthGreen');
+      secondClear++;
+    }
+    else if(thirdColor < 255) {
+      thirdColor++;
+      document.getElementById('fourthBlue').value = thirdColor;
+      changeColorCombo('fourthBlue');
+    }
+    else if(thirdClear < 256) {
+      document.getElementById('fourthBlue').value = (thirdColor - thirdClear);
+      changeColorCombo('fourthBlue');
+      thirdClear++;
+    }
+    else if(firstCombo < 255) {
+      firstCombo++;
+      document.getElementById('fourthRed').value = firstCombo;
+      document.getElementById('fourthGreen').value = firstCombo;
+      changeColorCombo('fourthRed');
+      changeColorCombo('fourthGreen');
+    }
+    else if(comboClearOne < 256) {
+      document.getElementById('fourthRed').value = (firstCombo - comboClearOne);
+      document.getElementById('fourthGreen').value = (firstCombo - comboClearOne);
+      changeColorCombo('fourthRed');
+      changeColorCombo('fourthGreen');
+      comboClearOne++;
+    }
+    else if(secondCombo < 255) {
+      secondCombo++;
+      document.getElementById('fourthBlue').value = secondCombo;
+      document.getElementById('fourthGreen').value = secondCombo;
+      changeColorCombo('fourthBlue');
+      changeColorCombo('fourthGreen');
+    }
+    else if(comboClearTwo < 256) {
+      document.getElementById('fourthBlue').value = (secondCombo - comboClearTwo);
+      document.getElementById('fourthGreen').value = (secondCombo - comboClearTwo);
+      changeColorCombo('fourthBlue');
+      changeColorCombo('fourthGreen');
+      comboClearTwo++;
+    }
+    else if(thirdCombo < 255) {
+      thirdCombo++;
+      document.getElementById('fourthBlue').value = thirdCombo;
+      document.getElementById('fourthRed').value = thirdCombo;
+      changeColorCombo('fourthBlue');
+      changeColorCombo('fourthRed');
+    }
+    else if(comboClearThree < 256) {
+      document.getElementById('fourthBlue').value = (thirdCombo - comboClearThree);
+      document.getElementById('fourthRed').value = (thirdCombo - comboClearThree);
+      changeColorCombo('fourthBlue');
+      changeColorCombo('fourthRed');
+      comboClearThree++;
+    }
+    else if(finalCombo < 255) {
+      finalCombo++;
+      document.getElementById('fourthRed').value = finalCombo;
+      document.getElementById('fourthGreen').value = finalCombo;
+      document.getElementById('fourthBlue').value = finalCombo;
+      changeColorCombo('fourthRed');
+      changeColorCombo('fourthGreen');
+      changeColorCombo('fourthBlue');
+    }
+    else if(finalClear < 256) {
+      document.getElementById('fourthRed').value = (finalCombo - finalClear);
+      document.getElementById('fourthGreen').value = (finalCombo - finalClear);
+      document.getElementById('fourthBlue').value = (finalCombo - finalClear);
+      changeColorCombo('fourthRed');
+      changeColorCombo('fourthGreen');
+      changeColorCombo('fourthBlue');
+      finalClear++;
+    }
+    else {
+      firstColor = 0;
+      firstClear = 1;
+      secondColor = 0;
+      secondClear = 1;
+      thirdColor = 0;
+      thirdClear = 1;
+      firstCombo = 0;
+      comboClearOne = 1;
+      secondCombo = 0;
+      comboClearTwo = 1;
+      thirdCombo = 0;
+      comboClearThree = 1;
+      finalCombo = 0;
+      finalClear = 1;
+    }
+  }
+  function strobeBackground() {
+    if(document.getElementById('hiddenStrobeFlag').innerHTML == 'NoStrobe') {
+      document.getElementById('hiddenStrobeFlag').innerHTML = 'Strobe';
+      backgroundInterval = setInterval(strobeIntervalFunction, 5);
+    }
+  }
+  function stopStrobeBackground() {
+    if(document.getElementById('hiddenStrobeFlag').innerHTML == 'Strobe') {
+      document.getElementById('hiddenStrobeFlag').innerHTML = 'NoStrobe';
+      clearInterval(backgroundInterval);
+    }
+  }
+</script>
+</head>
+<body id="mainBody">
+  <div class="sliderContainer">
+    <input type="range" width="100%" min="0" max="255" value="0" class="redChooser" oninput="changeColorCombo(id)" id="fourthRed">
+    <p class="rgbDisplayer">Red Value:<span id="printRed">0</span></p>
+  </div>
+  <div class="sliderContainer" style="width:33.4%;">
+    <input type="range" width="100%" min="0" max="255" value="0" class="greenChooser" oninput="changeColorCombo(id)" id="fourthGreen">
+    <p class="rgbDisplayer">Green Value:<span id="printGreen">0</span></p>
+  </div>
+  <div class="sliderContainer">
+    <input type="range" width="100%" min="0" max="255" value="0" class="blueChooser" oninput="changeColorCombo(id)" id="fourthBlue">
+    <p class="rgbDisplayer">Blue Value:<span id="printBlue">0</span></p>
+  </div>
+  <div class="radioButtonContainer">
+    <input type="radio" id="lighten" name="blendMode" value="lighten" onchange="changeBlendMode(id)" checked /><label for="lighten">Lighten</label><br>
+  </div>
+  <div class="radioButtonContainer" style="width:33.4%;">
+    <input type="radio" id="darken" name="blendMode" value="darken" onchange="changeBlendMode(id)" /><label for="darken">Darken</label><br>
+  </div>
+  <div class="radioButtonContainer">
+    <input type="radio" id="difference" name="blendMode" value="difference" onchange="changeBlendMode(id)" /><label for="difference">Difference</label><br>
+  </div>
+  <div class="radioButtonContainer">
+    <input type="radio" id="luminosity" name="blendMode" value="luminosity" onchange="changeBlendMode(id)" /><label for="luminosity">Luminosity</label><br>
+  </div>
+  <div class="radioButtonContainer" style="width:33.4%;">
+    <input type="radio" id="screen" name="blendMode" value="screen" onchange="changeBlendMode(id)" /><label for="screen">Screen</label><br>
+  </div>
+  <div class="radioButtonContainer">
+    <input type="radio" id="hard-light" name="blendMode" value="hard-light" onchange="changeBlendMode(id)" /><label for="hard-light">Hard-Light</label><br>
+  </div>
+  <input type="radio" id="strobeToggle" name="strobeMode" value="strobe" onchange="strobeBackground()" /><label id="strobeButtonLabel" class="strobeLabels" for="strobeToggle">Enable Custom Strobe</label>
+  <input type="radio" id="strobeOff" name="strobeMode" value="strobeOff" onchange="stopStrobeBackground()" /><label id="stopStrobeButtonLabel" class="strobeLabels" for="strobeOff">Disable Custom Strobe</label>
+  <span id="mainHeader">Project Goals</span>
+  <dl>
+    <dt>
+      <label class="goalLabels">
+        <input type="checkbox" name="firstWebsiteProject" id="firstPGoal" />Complete First Website Project
+      </label>
+    </dt>
+    <dd>
+      <label class="innerGoals">
+        <input type="checkbox" name="firstWebA" />Set up four iframes with custom background images
+      </label>
+    </dd>
+    <dd>
+      <label class="innerGoals">
+        <input type="checkbox" name="firstWebB" />Create table in first page with changeable entries
+      </label>
+    </dd>
+    <dd>
+      <label class="innerGoals">
+        <input type="checkbox" name="firstWebC" />Create task list in second page with strikeable entries
+      </label>
+    </dd>
+    <dd>
+      <label class="innerGoals">
+        <input type="checkbox" name="firstWebD" />Create dynamically responsive inputs in third page
+      </label>
+    </dd>
+    <dd>
+      <label class="innerGoals">
+        <input type="checkbox" name="firstWebE" />Create a grid of custom checkboxes in fourth page
+      </label>
+    </dd>
+    <dd>
+      <label class="innerGoals">
+        <input type="checkbox" name="firstWebF" />Create custom sliders, buttons, functions for pages
+      </label>
+    </dd>
+    <dt>
+      <label class="goalLabels">
+        <input type="checkbox" name="firstUnityProject" id="secondPGoal" />Complete First Unity Project
+      </label>
+    </dt>
+  </dl>
+  <span style="display:none;" id="hiddenChangeFlag">Unset</span>
+  <span style="display:none;" id="hiddenStrobeFlag">NoStrobe</span>
+  <p>Work was dignifying because it was part of a social contract that is now broken. The baby boomers were the first generation in history that, thanks to urbanization and the pill, birthed a smaller generation than their own. Historically every generation has been empowered, by raw numerical advantage, to grab the political baton when they matured to adulthood and turn the state to their benefit. But this time, with an aging generation clinging to political power, the state was channeled to inflate real estate values to finance decadent retirements. Armies of other people's children were imported to compensate for the collapsing birth rate, pumping more and more demand into the already unattainable housing sector. The chain of events was predictable based purely on incentives and the unique demographic shift. Do you expect men to derive "dignity" from work that rewards none of the meaningful incentives that motivated all previous generations (and all the life on this planet, for that matter)? Because historically the male fantasy has not been to work to a sexless death in a demeaning social experiment as they're denigrated and taxed to pay for the importation of their "more deserving" replacements. Get bent.</p>
+</body>
+</html>
