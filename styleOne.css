@@ -2,8 +2,8 @@ html {
     height: 100%;
 }
 body {
-	/*background-image: url('battle_First.jpg');*/
-	background-image: url('cat_dog.jfif');
+	background-image: url('battle_First.jpg');
+	/*background-image: url('cat_dog.jfif');*/
 	background-position: center;
 	background-attachment: fixed;
 	background-size: cover;
